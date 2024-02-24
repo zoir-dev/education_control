@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
     Input,
     Button,
@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 import { lazyLoad } from "@/utils/lazyLoad";
 import toast from "react-hot-toast";
 
-export const Form = ({ loading, auth, setLoading }: thisProps) => {
+const Form = ({ loading, auth, setLoading }: thisProps) => {
     const [passwordHide, setPasswordHide] = useState(true);
     const [validatePassword, setValidatePassword] = useState(true)
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
@@ -101,6 +101,8 @@ export const Form = ({ loading, auth, setLoading }: thisProps) => {
         </form>
     );
 };
+
+export default Form
 
 
 interface thisProps {

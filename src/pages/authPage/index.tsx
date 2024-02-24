@@ -6,9 +6,9 @@ import {
   Card,
   CardBody,
 } from "@nextui-org/react";
-import { Form } from "./Form";
+import Form from "./Form";
 
-export const AuthPage = () => {
+const AuthPage = () => {
   const [selected, setSelected] = useState("login");
   const [loading, setLoading] = useState(false)
 
@@ -39,4 +39,5 @@ export const AuthPage = () => {
   );
 };
 
+export default AuthPage
 
