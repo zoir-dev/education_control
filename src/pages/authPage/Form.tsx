@@ -17,6 +17,7 @@ const Form = ({ loading, auth, setLoading }: thisProps) => {
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
 
     const router = useRouter()
+    const isBrowser = typeof window !== 'undefined'
 
     const getIcon = () => {
         return passwordHide ? <EyeOff onClick={() => setPasswordHide(!passwordHide)} className="w-5 cursor-pointer text-foreground-500" /> : <Eye onClick={() => setPasswordHide(!passwordHide)} className="w-5 cursor-pointer text-foreground-500" />;
@@ -28,20 +29,20 @@ const Form = ({ loading, auth, setLoading }: thisProps) => {
             setLoading(true)
             if (validatePassword) {
                 if (auth) {
-                    localStorage.setItem('phone', JSON.stringify(data.phoneNumber))
+                    isBrowser && localStorage.setItem('phone', JSON.stringify(data.phoneNumber))
                     await lazyLoad(2000)
                     router.push('/auth/check_password')
                 } else {
-                    localStorage.setItem('token', JSON.stringify(data))
+                    isBrowser && localStorage.setItem('token', JSON.stringify(data))
                     await lazyLoad(2000)
                     router.push('/')
-                    localStorage.removeItem('phone')
+                    isBrowser && localStorage.removeItem('phone')
                     toast.success('Authed successfully', {
                         className: '!bg-content1 !text-foreground'
                     })
                 }
             } else {
-                localStorage.setItem('phone', JSON.stringify(data.phoneNumber))
+                isBrowser && localStorage.setItem('phone', JSON.stringify(data.phoneNumber))
                 await forgotPassword()
             }
         } catch (error) {

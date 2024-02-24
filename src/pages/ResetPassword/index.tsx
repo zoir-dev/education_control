@@ -13,6 +13,8 @@ const ResetPassword = () => {
     const [password, setPassword] = useState('')
     const [reset, setReset] = useState('')
 
+    const isBrowser = typeof window !== 'undefined'
+
     const router = useRouter()
 
     const getIcon = () => {
@@ -26,7 +28,7 @@ const ResetPassword = () => {
                 setLoading(true)
                 await lazyLoad()
                 router.push('/')
-                localStorage.setItem('token', 'asdf')
+                isBrowser && localStorage.setItem('token', 'asdf')
                 toast.success('Authed successfully', {
                     className: '!bg-content1 !text-foreground'
                 })

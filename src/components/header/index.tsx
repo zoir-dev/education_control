@@ -12,9 +12,10 @@ const Header = () => {
   const [color, setColor] = useState('primary')
   const [bg, setBg] = useState('dark')
   const router = useRouter()
+  const isBrowser = typeof window !== 'undefined'
 
   const changeBg = (val?: string | null) => {
-    if (val) {
+    if (val && isBrowser) {
       localStorage.setItem("bg", `${val}`);
       document.body.classList.remove(bg);
       document.body.classList.add(val)
@@ -24,26 +25,31 @@ const Header = () => {
   };
 
   const changeTheme = (val: boolean) => {
-    localStorage.setItem("theme", `${val}`);
-    SetTheme(val);
-    val
-      ? document.body.classList.add(bg)
-      : (document.body.classList.remove('dark'), document.body.classList.remove('slate'))
+    if (isBrowser) {
+      localStorage.setItem("theme", `${val}`);
+      SetTheme(val);
+      val
+        ? document.body.classList.add(bg)
+        : (document.body.classList.remove('dark'), document.body.classList.remove('slate'))
+    }
   };
 
   const changeColor = (val: string) => {
-    localStorage.setItem("color", `${val}`);
-    document.body.classList.remove(color);
-    document.body.classList.add(val)
-    setColor(val);
+    if (isBrowser) {
+      localStorage.setItem("color", `${val}`);
+      document.body.classList.remove(color);
+      document.body.classList.add(val)
+      setColor(val);
+    }
   };
 
 
   useEffect(() => {
 
-    changeBg(localStorage.getItem('bg') || 'dark')
+    changeBg(isBrowser && localStorage.getItem('bg') || 'dark')
 
     changeTheme(
+      isBrowser &&
       JSON.parse(
         localStorage.getItem("theme") ||
         `${window.matchMedia &&
@@ -57,9 +63,11 @@ const Header = () => {
   }, []);
 
   const logOut = () => {
-    localStorage.removeItem('token')
-    router.push('/auth')
-    toast.success('Logged out successfully', { className: '!bg-content1 !text-foreground' })
+    if (isBrowser) {
+      localStorage.removeItem('token')
+      router.push('/auth')
+      toast.success('Logged out successfully', { className: '!bg-content1 !text-foreground' })
+    }
   }
   return (
     <header className="flex w-full items-center justify-between bg-background px-4 py-2 text-foreground sm:px-3 sm:py-3 md:px-5">
@@ -95,7 +103,7 @@ const Header = () => {
             <DropdownItem className={`!bg-[#1e293b] border-[5px] border-content1 ${bg === 'slate' && 'border-none'}`} onClick={() => changeBg('slate')} />
           </DropdownMenu>
         </Dropdown>
-        {localStorage.getItem('token') && <LogOut className="text-primary w-5 font-bold aspect-square p-1 px-[6px] bg-content1 cursor-pointer rounded-full box-content" onClick={logOut} />}
+        {isBrowser && localStorage.getItem('token') && <LogOut className="text-primary w-5 font-bold aspect-square p-1 px-[6px] bg-content1 cursor-pointer rounded-full box-content" onClick={logOut} />}
       </div>
     </header>
   );

@@ -13,10 +13,12 @@ export function Providers({ children }: { children: React.ReactNode }) {
   const pathnames: string[] = ['/auth', '/auth/check_password', '/auth/reset_password']
 
   useEffect(() => {
-    if (localStorage.getItem('token') && pathnames.find(p => p === pathName)) {
-      router.push('/')
-    } else if (!localStorage.getItem('token') && !pathnames.find(p => p === pathName)) {
-      router.push('/auth')
+    if (typeof window !== 'undefined') {
+      if (localStorage.getItem('token') && pathnames.find(p => p === pathName)) {
+        router.push('/')
+      } else if (!localStorage.getItem('token') && !pathnames.find(p => p === pathName)) {
+        router.push('/auth')
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathName])

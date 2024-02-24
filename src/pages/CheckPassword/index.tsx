@@ -30,7 +30,6 @@ const CheckPassword = () => {
 
     const resendPassword = () => {
         setTime(defaultTime)
-        console.log(JSON.parse(localStorage.getItem('phone') || ''))
     }
 
     setTimeout(() => {
